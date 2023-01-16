@@ -1,7 +1,7 @@
-Nama : Oling Anugrah Fajar Pratama
-Program Studi : Teknologi Informasi Universitas Lambung Mangkurat 
-Alamat : Jl. Pramuka RT03/06 Kelurahan Mentaos, Banjarbaru, Kalimantan Selatan
-Nomor Telepon (WA) : 0895 3408 32802 
+Nama : Oling Anugrah Fajar Pratama <br>
+Program Studi : Teknologi Informasi Universitas Lambung Mangkurat <br>
+Alamat : Jl. Pramuka RT03/06 Kelurahan Mentaos, Banjarbaru, Kalimantan Selatan <br>
+Nomor Telepon (WA) : 0895 3408 32802 <br>
 
 Proses Installasi Sistem
 
