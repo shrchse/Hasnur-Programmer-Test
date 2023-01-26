@@ -2,12 +2,16 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const Dashboard = () => {
     //ui
     const [isShow, setShow] = useState(false);
     const [table_mahasiswa, setTable_mahasiswa] = useState([]);
     const [isEdit, setEdit] = useState(false);
+
+    const mySwal = withReactContent(Swal);
 
     //database
     const [id, setId] = useState ("");
@@ -166,9 +170,18 @@ const Dashboard = () => {
                                 onClick={() => {
                                     if(nama_mhs && p_studi && semester && kelas && angkatan && email && ukt != null)
                                     {
-                                        updateMhsData();
+                                        mySwal.fire({
+                                            title: 'Saved!',
+                                            icon: 'success'
+                                        }).then(() => {
+                                            updateMhsData();
+                                        })
                                     } else {
-                                        alert ('field cannot be empty')
+                                        mySwal.fire({
+                                            position: 'top',
+                                            title: 'Missing Field!',
+                                            text: 'Some information are missing. Please make sure all field isn\'t empty!'
+                                        })
                                     }
                                 }}>Edit</button>
                             </div>
@@ -187,6 +200,7 @@ const Dashboard = () => {
                     <div className="px-6 pt-4 animate-pulse">
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-500 ">#React.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-300 ">#Tailwind.css</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-300 ">#Firebase</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-green-500 ">#Node.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-purple-400 ">#Axios.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-yellow-300 ">#Javascript</span>
@@ -249,9 +263,15 @@ const Dashboard = () => {
                                 onClick={() => {
                                     if(nama_mhs && p_studi && semester && kelas && angkatan && email && ukt != null)
                                     {
-                                        submitMhs()
+                                        mySwal.fire({
+                                            icon: 'success',
+                                            title: 'Success!',
+                                            text: 'Data Added'
+                                        }).then(() => {
+                                            submitMhs();
+                                        })
                                     } else {
-                                        alert('Field Cannot Be Empty');
+                                        mySwal.fire('Missing Information!', 'Please Fill All The Information', 'info');
                                     }
                                 }}>Add</button>
                             </div>
@@ -270,6 +290,7 @@ const Dashboard = () => {
                     <div className="px-6 pt-4 animate-pulse">
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-500 ">#React.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-300 ">#Tailwind.css</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-300 ">#Firebase</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-green-500 ">#Node.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-purple-400 ">#Axios.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-yellow-300 ">#Javascript</span>
@@ -307,9 +328,30 @@ const Dashboard = () => {
                         <td className="py-2 px-3">{value.semester}</td>
                         <td className="py-2 px-3">{value.kelas}</td>
                         <td className="py-2 px-3">
-                            <button className="bg-red-400 px-3 py-1 rounded-md hover:bg-red-500 mr-2" onClick={() => {deleteMhs(value.id)}}>Delete</button>
+                            <button className="bg-red-400 px-3 py-1 rounded-md hover:bg-red-500 mr-2" onClick={() => {
+                                mySwal.fire({
+                                    title: 'Delete ' + value.nama_mhs + '\'s Data ?',
+                                    text: "You won't be able to revert this!",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Delete!'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        deleteMhs(value.id)
+                                        Swal.fire(
+                                            'Deleted!',
+                                            'Your file has been deleted.',
+                                            'success'
+                                        )
+                                    }
+                                  })
+                            }}>Delete</button>
                             <a href="#btn-create">
-                                <button className="bg-yellow-400 px-3 py-1 rounded-md hover:bg-yellow-500" onClick={() => {updateMhs(value)}}>Edit</button>
+                                <button className="bg-yellow-400 px-3 py-1 rounded-md hover:bg-yellow-500" onClick={() => {
+                                    updateMhs(value)
+                                }}>Edit</button>
                             </a>
                         </td>
                         </tr>)

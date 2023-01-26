@@ -3,6 +3,8 @@ import Home from './Home';
 import Dashboard from './Dashboard';
 import Search from './Search';
 import DetailMhs from './DetailMhs';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -14,7 +16,7 @@ function App() {
   const [regPassword, setRegPassword] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-
+  const mySwal = withReactContent(Swal);
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -25,23 +27,30 @@ function App() {
 
   const register = async () => {
     try{
-      const regUser = await createUserWithEmailAndPassword(auth, regEmail, regPassword);
-      console.log(regUser);
+      await createUserWithEmailAndPassword(auth, regEmail, regPassword).then(() => {
+        mySwal.fire(
+          'Account Created!', 'Logging You In', 'success'
+        )
+      })
     } catch (error) {
-      console.log(error.message);
+      mySwal.fire(
+        'Invalid Email/Password', 'Please check your Email & Password are valid. Password Need to be at least 6 characters', 'question'
+      );
     }
   };
   const login = async () => {
     try{
-      const regUser = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      console.log(regUser);
-      
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword).then(() => {
+        mySwal.fire('Login Success', 'Welcome Back!', 'success')
+      })
     } catch (error) {
-      console.log(error.message);
+      mySwal.fire(
+        'Wrong Email/Password', 'Please Make Sure Your Login Info Correct', 'question'
+      );
     }
   };
   const logout = async () => {
-    await signOut(auth);
+    await signOut(auth)
   };
   if(user){
   return (
@@ -75,6 +84,9 @@ function App() {
 } else {
     return(
       <div id="this" className="h-screen w-6/6 mx-auto pt-32 bg-slate-200 flex ">
+      <div className='absolute top-6 text-cyan-50 left-20 p-5 bg-slate-500 rounded'>Email : testing@gmail.com <br /> Password : admin123</div>
+      <div className='absolute top-6 text-cyan-50 right-20 p-5 bg-slate-500 rounded'>Or you can create account with this form</div>
+        
       <div className="h-4/5 w-6/12 mx-20 bg-slate-400 flex flex-col px-20 py-20 text-left rounded-lg shadow-xl opacity-80 hover:opacity-100">
         <h1 className='text-4xl mb-10'>Login Form</h1>
           <label htmlFor="username" className="text-lg">Email</label>

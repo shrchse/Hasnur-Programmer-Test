@@ -4,9 +4,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import people from './thisImage.jpg'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const DetailMhs = () => {
-
+    const mySwal = withReactContent(Swal);
     const params = useParams();
     const [fetchData, setFetchData] = useState([])
     const [isEdit, setIsEdit] = useState(false)
@@ -142,9 +144,15 @@ const DetailMhs = () => {
                                 onClick={() => {
                                     if(nama_mhs && p_studi && semester && kelas && angkatan && email && ukt != null)
                                     {
-                                        updateMhsData();
+                                        mySwal.fire({
+                                            icon: 'success',
+                                            title: 'Success!',
+                                            text: 'Data Editted'
+                                        }).then(() => {
+                                            updateMhsData();
+                                        })
                                     } else {
-                                        alert ('field cannot be empty')
+                                        mySwal.fire('Missing Information!', 'Please Fill All The Information', 'info');
                                     }
                                 }}>Edit</button>
                             </div>
@@ -163,6 +171,7 @@ const DetailMhs = () => {
                     <div className="px-6 pt-4 animate-pulse">
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-500 ">#React.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-300 ">#Tailwind.css</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-blue-300 ">#Firebase</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-green-500 ">#Node.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-purple-400 ">#Axios.js</span>
                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-yellow-300 ">#Javascript</span>
